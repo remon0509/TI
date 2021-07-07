@@ -83,8 +83,8 @@ def MD(t_price, n, sma, pad_with_na=True):
 
 
 def CCI(t_price, sma_n, md_n):
-    sma = SMA(t_price, n=20)
-    md = MD(t_price, 20, sma)
+    sma = SMA(t_price, n=sma_n)
+    md = MD(t_price, md_n, sma)
     constant = 1/0.015
     cci = constant*((t_price - sma)/ md)
     return cci
