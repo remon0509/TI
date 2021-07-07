@@ -90,7 +90,7 @@ def CCI(t_price, sma_n, md_n):
     return cci
 
 
-def MACD(first_n, second_n):
+def MACD(close, first_n, second_n):
     first_ema = EMA(close, n=first_n)
     second_ema = EMA(close, n=second_n)
     return first_ema - second_ema
