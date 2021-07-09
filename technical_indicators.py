@@ -189,3 +189,44 @@ def k_avg_label(close, w, k):
     label = np.select(conditions, values)
     
     return diff, sigma, label
+
+
+
+
+
+
+def mega_rise_k_avg_label(close, w, k):
+    # w: look back w days including current day
+    # k: k future days
+
+    # Step 1: get sigma
+    tmp = np.zeros((len(close), w))
+    tmp[:] = np.nan
+    for i in range(w):
+        tmp[i:, i] = close[:-i] if i != 0 else close
+    w_mean = tmp.mean(axis=1)
+    sigma = np.sqrt(((tmp.T - w_mean).T**2).sum(axis=1)/w)
+
+    # Step 2: future k mean
+    tmp = np.zeros((len(close), k))
+    tmp[:] = np.nan
+    for i in range(k):
+        tmp[i:, i] = close[:-i] if i != 0 else close
+    k_mean = tmp.mean(axis=1)
+    k_pad = np.zeros(k)
+    k_pad[:] = np.nan
+    k_mean = np.append(k_mean[k:], k_pad)
+
+    # Step 3: labeling
+    diff = close - k_mean
+    conditions = [
+                (2*sigma > diff),
+                (2*sigma <= diff),
+                np.isnan(sigma) == True,
+                np.isnan(diff) == True
+                
+    ]
+    values = ['nothing', 'mega rise plus', np.nan, np.nan]
+    label = np.select(conditions, values)
+    
+    return diff, sigma, label
