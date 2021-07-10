@@ -226,7 +226,7 @@ def mega_rise_k_avg_label(close, w, k):
                 np.isnan(diff) == True
                 
     ]
-    values = ['nothing', 'mega rise plus', np.nan, np.nan]
+    values = ['Negative', 'Mega', np.nan, np.nan]
     label = np.select(conditions, values)
     
     return diff, sigma, label
